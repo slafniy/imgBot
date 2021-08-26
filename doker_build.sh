@@ -1,0 +1,1 @@
+sudo docker build --tag=slafniy-img-bot --network=host .
