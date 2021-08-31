@@ -9,4 +9,4 @@ Prepare YAML configuration file with the following:
     google-search-engine-id: %google search engine id%
 
 And execute this:
-`sudo docker run --network=host -v %path-to-config%:/app/cfg.yaml slafniy/img-bot cfg.yaml`
+`sudo docker run --network=host -v %path-to-config%:/opt/img-bot/cfg.yaml slafniy/img-bot cfg.yaml`

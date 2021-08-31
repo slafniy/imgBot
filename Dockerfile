@@ -2,10 +2,13 @@
 
 FROM centos:latest
 
-RUN dnf install python39 firefox -y
+RUN dnf install python39 -y
 
-WORKDIR /app
-COPY . .
+WORKDIR opt/img-bot
+COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
+
+COPY . .
+
 
 ENTRYPOINT ["python3", "main.py"]

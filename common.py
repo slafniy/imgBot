@@ -1,15 +1,28 @@
+import contextlib
 import logging
 import sys
+import time
 
 
-def get_logger(logger_name: str) -> logging.Logger:
-    logger = logging.Logger(logger_name)
-    stream_handler = logging.StreamHandler(sys.stdout)
-    stream_handler.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s %(name)s [%(levelname)s]: %(message)s')
-    stream_handler.setFormatter(formatter)
-    logger.addHandler(stream_handler)
-    return logger
+class Logger(logging.Logger):
+    def __init__(self, name: str, level):
+        super().__init__(name)
+        stream_handler = logging.StreamHandler(sys.stdout)
+        stream_handler.setLevel(level)
+        formatter = logging.Formatter('%(asctime)s %(name)s [%(levelname)s]: %(message)s')
+        stream_handler.setFormatter(formatter)
+        self.addHandler(stream_handler)
+
+
+@contextlib.contextmanager
+def measure_time(operation_name: str, logger: logging.Logger):
+    """
+    Logs when operation started and finished and measures execution time
+    """
+    logger.info(f'{operation_name}  - started...')
+    t = time.perf_counter()
+    yield
+    logger.info(f'{operation_name} took {time.perf_counter() - t:0.2f} sec')
 
 
 class ImageSearchError(Exception):
