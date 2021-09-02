@@ -32,4 +32,4 @@ if __name__ == '__main__':
         bot.send_photo(msg.chat.id, img, reply_to_message_id=msg.id)
 
 
-    bot.polling()
+    bot.polling(none_stop=True)
