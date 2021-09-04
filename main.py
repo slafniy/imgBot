@@ -1,6 +1,5 @@
 import logging
 import sys
-import time
 
 import telebot
 import yaml
@@ -8,9 +7,6 @@ import yaml
 import common
 import res
 from img_search_google import ImageSearcher
-
-
-RESTART_DELAY = 15
 
 
 if __name__ == '__main__':
@@ -38,7 +34,8 @@ if __name__ == '__main__':
 
     while True:
         try:
-            bot.polling(non_stop=True, skip_pending=True)
+            bot.polling(non_stop=True, timeout=60)
+        except KeyboardInterrupt:
+            break
         except Exception as e:
-            telebot.logger.warning(f'An exception occurred: {e}\nRestarting in {RESTART_DELAY} sec')
-            time.sleep(RESTART_DELAY)
+            telebot.logger.warning(f'An exception occurred: {e}\nRestarting...')
