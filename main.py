@@ -1,5 +1,6 @@
 import logging
 import sys
+import time
 
 import telebot
 import yaml
@@ -7,6 +8,10 @@ import yaml
 import common
 import res
 from img_search_google import ImageSearcher
+
+
+RESTART_DELAY = 15
+
 
 if __name__ == '__main__':
 
@@ -31,5 +36,9 @@ if __name__ == '__main__':
             img = res.FOUND_NOTHING
         bot.send_photo(msg.chat.id, img, reply_to_message_id=msg.id)
 
-
-    bot.polling(none_stop=True)
+    while True:
+        try:
+            bot.polling(non_stop=True, skip_pending=True)
+        except Exception as e:
+            telebot.logger.warning(f'An exception occurred: {e}\nRestarting in {RESTART_DELAY} sec')
+            time.sleep(RESTART_DELAY)
