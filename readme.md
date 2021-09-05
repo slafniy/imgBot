@@ -2,11 +2,4 @@
 Execute `./docker_build.sh`
 
 #### How to run container
-Prepare YAML configuration file with the following:
-
-    telegram-token: %your telegram bot token%
-    google-api-key: %google api developer key%
-    google-search-engine-id: %google search engine id%
-
-And execute this:
-`sudo docker run --network=host -v %path-to-config%:/opt/img-bot/cfg.yaml slafniy/img-bot cfg.yaml`
+`sudo docker run --network=host %bot-token% %google-api-key% %google-search-id%`

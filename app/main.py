@@ -1,26 +1,24 @@
 import logging
+import os
 import sys
 
 import telebot
-import yaml
 
 import common
 import res
 from img_search_google import ImageSearcher
 
-
 if __name__ == '__main__':
 
-    with open(sys.argv[1]) as yaml_file:
-        cfg = yaml.safe_load(yaml_file)
+    print(f'Env vars: {os.environ}')
 
-    token = cfg["telegram-token"]
+    exit(0)
 
-    telebot.logger.setLevel(logging.INFO)
+    telebot.logger.setLevel(logging.DEBUG)
 
-    bot = telebot.TeleBot(token=token)
+    bot = telebot.TeleBot(token=sys.argv[1])
 
-    searcher = ImageSearcher(cfg['google-api-key'], cfg['google-search-engine-id'])
+    searcher = ImageSearcher(sys.argv[2], sys.argv[3])
 
 
     @bot.message_handler(commands=['img'])
@@ -31,6 +29,7 @@ if __name__ == '__main__':
         except common.ImageSearchError:
             img = res.FOUND_NOTHING
         bot.send_photo(msg.chat.id, img, reply_to_message_id=msg.id)
+
 
     while True:
         try:
