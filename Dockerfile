@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.9.7
+FROM python:3.9.7-slim
 
 WORKDIR opt/img-bot
 COPY requirements.txt requirements.txt
