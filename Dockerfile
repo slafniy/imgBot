@@ -1,8 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM centos:latest
-
-RUN dnf install python39 -y
+FROM python:3.9.7
 
 WORKDIR opt/img-bot
 COPY requirements.txt requirements.txt
@@ -12,4 +10,4 @@ RUN rm requirements.txt
 COPY ./app .
 
 
-ENTRYPOINT ["python3", "main.py"]
+ENTRYPOINT ["python3", "img_bot.py"]

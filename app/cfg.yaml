@@ -1,0 +1,5 @@
+# This is a sample configuration
+# Replace placeholders with actual values
+telegram_token: YOUR_TELEGRAM_TOKEN  # go to @BotFather in Telegram to get one
+google_api_key: YOUR_GOOGLE_API_KEY
+google_search_id: YOUR_GOOGLE_SEARCH_ID
