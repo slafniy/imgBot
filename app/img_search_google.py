@@ -19,7 +19,7 @@ class ImageSearcher:
             'safe': 'off',
             'fileType': 'jpg|gif|png'
         }
-        with common.measure_time(f'Searching an image in Google, query: {search_query}', self._logger):
+        with self._logger.measure_time(f'Searching an image in Google, query: {search_query}'):
             gis = GoogleImagesSearch(self.api_key, self.search_engine_id)
             try:
                 gis.search(search_params)

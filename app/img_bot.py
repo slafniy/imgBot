@@ -1,6 +1,7 @@
 import argparse
 import logging
 import pathlib
+import time
 
 import telebot
 import yaml
@@ -8,6 +9,13 @@ import yaml
 import common
 import res
 from img_search_google import ImageSearcher
+
+
+RETRIES_NUMBER = 5
+RETRIES_TIMEOUT = 5
+
+logger = common.Logger('MainLogger', logging.INFO)
+
 
 if __name__ == '__main__':
     argument_parser = argparse.ArgumentParser()
@@ -37,16 +45,20 @@ if __name__ == '__main__':
 
     @bot.message_handler(commands=['img'])
     def echo_message(msg: telebot.types.Message):
+        q = msg.text.split(sep=' ', maxsplit=1)[1]
         try:
-            img = searcher.search_image(msg.text.split(sep=' ', maxsplit=1)[1])  # text goes with command itself
+            img = searcher.search_image(q)  # text goes with command itself
         except common.ImageSearchError:
             img = res.FOUND_NOTHING
-        for i in range(5):
+
+        for i in range(1, RETRIES_NUMBER):
             try:
-                bot.send_chat_action(msg.chat.id, 'upload_photo', timeout=10)
-                bot.send_photo(msg.chat.id, img, reply_to_message_id=msg.id)
+                with logger.measure_time(f'Sending image for {q}, try #{i}'):
+                    bot.send_chat_action(msg.chat.id, 'upload_photo', timeout=30)
+                    bot.send_photo(msg.chat.id, img, reply_to_message_id=msg.id)
             except Exception as e:
-                print(f'Got error: {e}, doing retry #{i}')
+                logger.error(f'Image sending error ({q}): {e}')
+                time.sleep(RETRIES_TIMEOUT)
             else:
                 break
 
